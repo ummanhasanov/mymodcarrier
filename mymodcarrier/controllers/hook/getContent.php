@@ -12,7 +12,8 @@ class MyModCarrierGetContentController {
     public function testAPIConnection($mca_email, $mca_token) {
         $url = 'http://localhost/api/index.php/';
         $params = '?mca_email=' . $mca_email . '&mca_token=' . $mca_token . '&method=testConnection';
-        $result = file_get_contents($url . $params);
+        $result = json_decode(file_get_contents($url . $params), true);
+        d($result);
         if ($result == 'Success') {
             return true;
         }
