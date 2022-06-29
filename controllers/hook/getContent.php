@@ -73,6 +73,7 @@ class MyModCarrierGetContentController {
         $html_confirmation_message = $this->module->display($this->file, 'getContent.tpl');
         $html_form = $this->renderForm();
         return $html_confirmation_message . $html_form;
+        
     }
 
 }
