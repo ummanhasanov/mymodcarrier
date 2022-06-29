@@ -13,14 +13,6 @@ class MyModCarrier extends CarrierModule {
         $this->description = $this->l('A simple carrier module');
     }
 
-    public function getOrderShippingCost($params, $shipping_cost) {
-        return false;
-    }
-
-    public function getOrderShippingCostExternal($params) {
-        return false;
-    }
-
     public function getHookController($hook_name) {
         require_once(dirname(__FILE__) . '/controllers/hook/' . $hook_name . '.php');
         $controller_name = $this->name . $hook_name . 'Controller';
@@ -33,6 +25,12 @@ class MyModCarrier extends CarrierModule {
         return $controller->run();
     }
 
-    
+    public function getOrderShippingCost($params, $shipping_cost) {
+        return 23;
+    }
+
+    public function getOrderShippingCostExternal($params) {
+        return false;
+    }
 
 }
