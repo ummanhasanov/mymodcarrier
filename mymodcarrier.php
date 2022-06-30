@@ -2,6 +2,8 @@
 
 class MyModCarrier extends CarrierModule {
 
+    public $id_carrier;
+
     public function __construct() {
         $this->name = 'mymodcarrier';
         $this->tab = 'shipping_logistics';
@@ -105,11 +107,12 @@ class MyModCarrier extends CarrierModule {
     }
 
     public function getOrderShippingCost($params, $shipping_cost) {
-        return 23;
+        $contoller = $this->getHookController('getOrderShippingCost');
+        return $contoller->run($params, $shipping_cost);
     }
 
     public function getOrderShippingCostExternal($params) {
-        return false;
+        return $this->getOrderShippingCost($params, 0);
     }
 
 }
