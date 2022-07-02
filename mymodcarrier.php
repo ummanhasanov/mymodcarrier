@@ -16,9 +16,17 @@ class MyModCarrier extends CarrierModule {
     }
 
     public function install() {
+
         if (!parent::install()) {
             return false;
         }
+
+        if (!$this->registerHook('actionCarrierUpdate') || 
+                !$this->registerHook('displayCarrierList')|| 
+                !$this->registerHook('getOrderShippingCost')) {
+            return false;
+        }
+
         if (!$this->installCarriers()) {
             return false;
         }
@@ -41,7 +49,7 @@ class MyModCarrier extends CarrierModule {
                 $carrier->active = 1;
                 $carrier->deleted = 0;
                 foreach (Language::getLanguages(true) as $language) {
-                    $carrier->delay[(int) $language['id_lang']] = 'Delay' . $carrier_name;
+                    $carrier->delay[(int) $language['id_lang']] = 'Delay ' . $carrier_name;
                 }
                 $carrier->shipping_handling = false;
                 $carrier->range_behavior = 0;
@@ -113,6 +121,16 @@ class MyModCarrier extends CarrierModule {
 
     public function getOrderShippingCostExternal($params) {
         return $this->getOrderShippingCost($params, 0);
+    }
+
+    public function hookActionCarrierUpdate($params) {
+        $controller = $this->getHookController('actionCarrierUpdate');
+        return $controller->run($params);
+    }
+
+    public function hookDisplayCarrierList() {
+        $controller = $this->getHookController('displayCarrierList');
+        return $controller->run();
     }
 
 }

@@ -14,16 +14,6 @@ class MyModCarrierGetOrderShippingCostController {
         $this->city = $address->city;
     }
 
-    public function run($cart, $shipping_fees) {
-        $this->loadCity($cart);
-        $delivery_service = $this->getDeliveryService();
-        $shipping_cost = $this->getShippingCost($this->module->id_carrier, $delivery_service);
-        if ($shipping_cost === false) {
-            return false;
-        }
-        return $shipping_cost + $shipping_fees;
-    }
-
     public function getDeliveryService() {
         $url = 'http://localhost/api/index.php';
         $params = '?mca_email=' . Configuration::get('MYMOD_CA_EMAIL') .
@@ -42,6 +32,16 @@ class MyModCarrierGetOrderShippingCostController {
             $shipping_cost = (int) $delivery_service['RelayPoint'];
         }
         return $shipping_cost;
+    }
+
+    public function run($cart, $shipping_fees) {
+        $this->loadCity($cart);
+        $delivery_service = $this->getDeliveryService();
+        $shipping_cost = $this->getShippingCost($this->module->id_carrier, $delivery_service);
+        if ($shipping_cost === false) {
+            return false;
+        }
+        return $shipping_cost + $shipping_fees;
     }
 
 }
