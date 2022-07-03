@@ -29,7 +29,8 @@ class MyModCarrierDisplayCarrierListController {
         $this->context->controller->addJS($this->_path . 'views/js/mymodcarrier.js');
         $this->context->smarty->assign('id_carrier_relay_point', Configuration::get('MYMOD_CA_REPO'));
         $this->context->smarty->assign('mymodcarrier_relay_point', $relay_point);
-
+        $ajax_link = $this->context->link->getModuleLink('mymodcarrier', 'relaypoint', array('controller' => 'relaypoint'));
+        $this->context->smarty->assign('mymodcarrier_ajax_link', $ajax_link);
         return $this->module->display($this->file, 'displayCarrierList.tpl');
     }
 

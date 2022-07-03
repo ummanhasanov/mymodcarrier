@@ -5,7 +5,12 @@ function mymodcarrier_load()
     $('.delivery_option_radio').click(function () {
         mymodcarrier_carrier_selection();
     });
-
+    
+    // Save relay point selection
+    $('.mymodcarrier_relay_point').click(function () {
+        mymodcarrier_relaypoint_selection();
+    });
+    mymodcarrier_relaypoint_selection();
 
     mymodcarrier_carrier_selection();
 }
@@ -22,4 +27,20 @@ function mymodcarrier_carrier_selection() {
             $('#delivery-options').show();
         }
     });
-}  
+}
+
+function mymodcarrier_relaypoint_selection() {
+    // check all relay point input radio
+    $('.mymodcarrier_relay_point').each(function () {
+
+        // Check if relay point is selected
+        if ($(this).prop('checked')) {
+            $.ajax({
+                type: "POST",
+                url: mymodcarrier_ajax_link,
+                data: {relay_point: $(this).val()},
+                context: document.body
+            });
+        }
+    });
+}
