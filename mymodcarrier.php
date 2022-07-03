@@ -21,9 +21,14 @@ class MyModCarrier extends CarrierModule {
             return false;
         }
 
-        if (!$this->registerHook('actionCarrierUpdate') || 
-                !$this->registerHook('displayCarrierList')|| 
-                !$this->registerHook('getOrderShippingCost')) {
+        if (!$this->registerHook('actionCarrierUpdate') ||
+                !$this->registerHook('displayCarrierList')) {
+            return false;
+        }
+
+        // Execute module install MySQL commands
+        $sql_file = dirname(__FILE__) . '/install/install.sql';
+        if (!$this->loadSQLFile($sql_file)) {
             return false;
         }
 
@@ -31,6 +36,23 @@ class MyModCarrier extends CarrierModule {
             return false;
         }
         return true;
+    }
+
+    public function loadSQLFile($sql_file) {
+        // Get install MySQL file content
+        $sql_content = file_get_contents($sql_file);
+        // Replace prefix and store MySQL command in array
+        $sql_content = str_replace('PREFIX_', _DB_PREFIX_, $sql_content);
+        $sql_requests = preg_split("/;\s*[\r\n]+/", $sql_content);
+        // Execute each MySQL command
+        $result = true;
+        foreach ($sql_requests AS $request) {
+            if (!empty($request)) {
+                $result &= Db::getInstance()->execute(trim($request));
+            }
+        }
+        // Return result
+        return $result;
     }
 
     public function installCarriers() {
