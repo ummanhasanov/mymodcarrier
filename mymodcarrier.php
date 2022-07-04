@@ -22,7 +22,8 @@ class MyModCarrier extends CarrierModule {
         }
 
         if (!$this->registerHook('actionCarrierUpdate') ||
-                !$this->registerHook('displayCarrierList')) {
+                !$this->registerHook('displayCarrierList') ||
+                !$this->registerHook('displayAdminOrder')) {
             return false;
         }
 
@@ -152,6 +153,11 @@ class MyModCarrier extends CarrierModule {
 
     public function hookDisplayCarrierList() {
         $controller = $this->getHookController('displayCarrierList');
+        return $controller->run();
+    }
+
+    public function hookDisplayAdminOrder() {
+        $controller = $this->getHookController('displayAdminOrder');
         return $controller->run();
     }
 
